@@ -1,0 +1,7 @@
+test/
+*.prikey
+*.pubkey
+*.terraform
+*.tfstate.backup
+*.tfstate
+*.lock.hcl

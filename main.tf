@@ -14,41 +14,6 @@ resource "random_string" "suffix" {
   special = false
 }
 
-
-locals {
-  name   = "aws-sa-demo"
-  suffix = random_string.suffix.result
-  # region = "ap-southeast-1"
-  az             = data.aws_availability_zones.available.names[0]
-  split_ext_ip   = split(".", data.external.current_ip.result.ip)
-  ext_ip_cidr_16 = "${join(".", ["${local.split_ext_ip[0]}", "${local.split_ext_ip[1]}", "0", "0"])}/16"
-
-  # 初始化EC2 VM，第一次启动时执行，之后不执行
-  user_data = <<-EOT
-  #!/bin/bash
-  sudo yum update -y
-  sudo yum install amazon-linux-extras -y
-  # For nginx's requirement
-  sudo yum install openssl11-libs -y
-
-  # Config Nginx web server
-  sudo amazon-linux-extras install nginx1 -y
-  sudo echo "<h1>Hello AWS World</h1>" >  /usr/share/nginx/html/index.html 
-  sudo systemctl enable nginx
-  sudo systemctl start nginx
-
-  # Mount EBS disk
-  sudo touch "${var.test_tmp_path}/test.sh"
-  sudo lsblk > "${var.test_tmp_path}/test.sh"
-  # sudo mkfs -t xfs /dev/xvdd
-  EOT
-
-  default_tags = {
-    User = "jyue"
-    Proj = "aws-sa-demo"
-  }
-}
-
 resource "aws_instance" "sa-demo" {
   ami           = data.aws_ami.amzn2_x86-64.image_id
   instance_type = var.aws_ec2_type
@@ -68,9 +33,11 @@ resource "aws_instance" "sa-demo" {
   key_name = var.key_pair_file
 
   user_data = local.user_data
+  # user_data = file("user_data/user_data.sh")
 
   depends_on = [
-    var.key_pair_file
+    var.key_pair_file,
+    aws_ebs_volume.sa-demo
   ]
 
   tags = merge(local.default_tags, {

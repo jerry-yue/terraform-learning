@@ -4,4 +4,5 @@ test/
 *.terraform
 *.tfstate.backup
 *.tfstate
-*.lock.hcl
+*.lock.*
+*.log

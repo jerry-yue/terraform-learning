@@ -4,6 +4,9 @@
 - resource region: `ap-southeast-1`
 - resource availability zone: `apsoutheast-1a`
 - mount an EBS volume: `size 1GB`
+    - 1 partition
+    - has file system
+    - auto mount while instace startup
 - install a web server application: `nginx` in this example
 - default page showing: `Hello AWS World`
 - the default page file should be saved in the EBS volume

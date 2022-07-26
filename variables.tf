@@ -43,11 +43,6 @@ data "external" "current_ip" {
 variable "aws_ebs_device_name" {
   type = string
   default = "/dev/sdd"
-  description = "AWS EBS Storage Device Name"
-}
-
-variable "test_tmp_path" {
-  type = string
-  default = "/tmp"
+  description = "AWS EBS Volume Device Name"
 }
 

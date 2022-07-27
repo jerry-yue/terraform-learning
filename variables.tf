@@ -41,8 +41,13 @@ data "external" "current_ip" {
 }
 
 variable "aws_ebs_device_name" {
-  type = string
-  default = "/dev/sdd"
+  type        = string
+  default     = "/dev/sdd"
   description = "AWS EBS Volume Device Name"
 }
 
+variable "aws_ebs_fdisk_param_file" {
+  type        = string
+  default     = "/tmp/fdisk_param"
+  description = "AWS EBS Volume fdisk parameters saved in default path in EC2 Instance"
+}

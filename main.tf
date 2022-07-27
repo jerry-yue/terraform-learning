@@ -39,6 +39,13 @@ resource "aws_instance" "sa-demo" {
   #   source      = "./fdisk_param"              # On local host disk
   #   destination = var.aws_ebs_fdisk_param_file # on EC2 Instance
   # }
+  # connection {
+  #   type        = "ssh"
+  #   user        = "ec2-user"
+  #   port        = "22"
+  #   host        = element(aws_eip.eip.*.public_ip, count.index)
+  #   private_key = file(var.ssh_private_key)
+  # }
 
   # depends_on = [
   #   var.key_pair_file,
@@ -195,5 +202,51 @@ resource "aws_volume_attachment" "sa-demo" {
 }
 
 
+# ALB
+resource "aws_lb" "sa-demo" {
+  name               = "sa-demo"
+  internal           = false
+  load_balancer_type = "network" # default type is application
+  # security_groups    = [aws_security_group.sa-demo.id]
+  subnets            = [aws_subnet.sa-demo.id] # alb require at least 2 subnets
+
+  enable_deletion_protection = false # if true, tfd will not delete it
+
+  # access_logs {
+  #   bucket  = aws_s3_bucket.lb_logs.bucket
+  #   prefix  = "test-lb"
+  #   enabled = true
+  # }
+
+  tags = merge(local.default_tags, {
+    Res  = "alb",
+    Name = "${local.name}-${local.suffix}-${local.az}"
+  })
+}
+
+resource "aws_lb_target_group" "sa-demo" {
+  name     = "sa-demo"
+  port     = 80
+  protocol = "TCP" # Application HTTP,HTTPS; Network TCP, UDP
+  target_type = "instance" # default value is instance, can be ip, alb, lambda etc
+  vpc_id   = aws_vpc.sa-demo.id
+}
+
+resource "aws_lb_target_group_attachment" "sa-demo" {
+  target_group_arn = aws_lb_target_group.sa-demo.arn
+  target_id        = aws_instance.sa-demo.id
+  port             = 80
+}
+
+resource "aws_lb_listener" "sa-demo" {
+  load_balancer_arn = aws_lb.sa-demo.arn
+  port              = "80"
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.sa-demo.arn
+  }
+}
 
 # S3

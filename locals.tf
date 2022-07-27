@@ -12,29 +12,23 @@ locals {
     # sudo yum update -y
     # sudo yum install amazon-linux-extras -y
     # For nginx's requirement
-    echo "installing openssl11"
+    echo ">> installing openssl11 <<"
     sudo yum install openssl11-libs -y
-    echo "installing nginx and create mount point below"
+    echo ">> installing nginx and create mount point below <<"
     sudo amazon-linux-extras install nginx1 -y
-echo "Format EBS volume"
-sudo fdisk ${var.aws_ebs_device_name} <<-EOF
-n
-p
-1
-
-
-wq
-EOF
-    echo "Formated EBS volume"
+    echo ">> Format EBS volume <<"
+    sudo echo -e "n\np\n1\n\n\nwq" > ${var.aws_ebs_fdisk_param_file}
+    sudo fdisk ${var.aws_ebs_device_name} < ${var.aws_ebs_fdisk_param_file}
+    echo ">> Formated EBS volume <<"
     sleep 1
     sudo mkfs -t xfs ${var.aws_ebs_device_name}1 >> /tmp/test.log
-    echo "Auto mounting setup after reboot"
+    echo ">> Auto mounting setup after reboot <<"
     sudo chmod 0777 /etc/fstab
     sudo echo '${var.aws_ebs_device_name}1     /usr/share/nginx/html    xfs    defaults        1 2'  >> /etc/fstab
     sudo chmod 0644 /etc/fstab
-    echo "Mount EBS volume"
+    echo ">> Mount EBS volume <<"
     sudo mount ${var.aws_ebs_device_name}1 /usr/share/nginx/html
-    echo "Config Nginx web server"
+    echo ">> Config Nginx web server <<"
     sudo echo "<h1>Hello AWS World</h1>" >  /usr/share/nginx/html/index.html 
     sudo systemctl enable nginx
     sudo systemctl start nginx

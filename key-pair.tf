@@ -10,7 +10,7 @@ resource "tls_private_key" "sa-demo" {
 }
 
 resource "aws_key_pair" "sa-demo" {
-  key_name = var.key_pair_file
+  key_name   = var.key_pair_file
   public_key = tls_private_key.sa-demo.public_key_openssh
 
   tags = merge(local.default_tags, {

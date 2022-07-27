@@ -26,3 +26,10 @@
 - resource region: `ap-southeast-1`
 - save some screenshots to the S3
 - the screnshots also will be shown in the web page
+
+
+
+# How to use it
+1. Initial terraform folder by `terraform init`
+2. Setup awscli AK and SK
+3. Execute the tf script file by `terraform apply`. (Recommend `terraform plan` before apply.)

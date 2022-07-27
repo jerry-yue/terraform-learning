@@ -34,11 +34,17 @@ resource "aws_instance" "sa-demo" {
 
   user_data = local.user_data
   # user_data = file("user_data/user_data.sh")
+  # provisioner "file" {
+  #   # 需要 connection block。具体参考官方文档
+  #   source      = "./fdisk_param"              # On local host disk
+  #   destination = var.aws_ebs_fdisk_param_file # on EC2 Instance
+  # }
 
-  depends_on = [
-    var.key_pair_file,
-    aws_ebs_volume.sa-demo
-  ]
+  # depends_on = [
+  #   var.key_pair_file,
+  #   aws_ebs_volume.sa-demo,
+  #   var.aws_ebs_fdisk_param_file
+  # ]
 
   tags = merge(local.default_tags, {
     Res  = "ec2",
@@ -96,20 +102,20 @@ resource "aws_subnet" "sa-demo" {
   })
 }
 
-resource "aws_network_interface" "sa-demo" {
-  subnet_id = aws_subnet.sa-demo.id
-  # private_ips = ["172.16.1.50"]
-  security_groups = [aws_security_group.sa-demo.id]
-  tags = merge(local.default_tags, {
-    Res  = "adapter",
-    Name = "${local.name}-${local.suffix}-${local.az}"
-  })
+# resource "aws_network_interface" "sa-demo" {
+#   subnet_id = aws_subnet.sa-demo.id
+#   # private_ips = ["172.16.1.50"]
+#   security_groups = [aws_security_group.sa-demo.id]
+#   tags = merge(local.default_tags, {
+#     Res  = "adapter",
+#     Name = "${local.name}-${local.suffix}-${local.az}"
+#   })
 
-  # attachment {
-  #   instance = aws_instance.sa-demo.id
-  #   device_index = 1
-  # }
-}
+#   # attachment {
+#   #   instance = aws_instance.sa-demo.id
+#   #   device_index = 1
+#   # }
+# }
 
 # resource "aws_key_pair" "sa-demo" {
 

@@ -1,13 +1,13 @@
 variable "aws_region" {
   type        = string
   default     = "ap-southeast-1"
-  description = "Stage 1: AWS Region"
+  description = "AWS Region"
 }
 
 variable "aws_ec2_type" {
   type        = string
   default     = "t2.micro"
-  description = "Stage 1: AWS EC2 Type"
+  description = "AWS EC2 Type"
 }
 
 # variable "aws_ec2_ami" {

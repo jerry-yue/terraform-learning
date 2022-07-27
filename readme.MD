@@ -33,3 +33,11 @@
 1. Initial terraform folder by `terraform init`
 2. Setup awscli AK and SK
 3. Execute the tf script file by `terraform apply`. (Recommend `terraform plan` before apply.)
+
+
+
+# More reference
+[How to Deploy a Set of EC2 Instances behind an ALB Using Terraform | by Dasanirban | AWS in Plain English](https://aws.plainenglish.io/deploy-a-set-of-ec2-instances-behind-an-alb-using-terraform-403fe584f09e)
+
+[How to manage Public and Private subnets in AWS with Terraform? | by Dhruvin Soni | Geek Culture | Medium](https://medium.com/geekculture/how-to-manage-public-and-private-subnets-in-aws-with-terraform-69c272003c81)
+

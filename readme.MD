@@ -30,10 +30,23 @@
 
 
 # How to use it
+0. Before the first time's applying, or before destorying, please comment all code lines in `s3_object_url.tf` file
 1. Initial terraform folder by `terraform init`
 2. Setup awscli AK and SK
 3. Execute the tf script file by `terraform apply`. (Recommend `terraform plan` before apply.)
+4. Un-comment `s3_object_url.tf`, and `terraform apply` again to get the object URL saved in S3 bucket
+5. Update Nginx's index.html file
+6. Allow CORS
+7. After all test passed, please comment all code lines in `s3_object_url.tf` file, and execte `terraform destroy` to remove all resources.
+> If the resources destroyed failed, please force detach EBS volume from AWS console. And try the destroy command again.
 
+
+# Improvement Required
+1. Resolve the bug of cannot detach EBS volume via terraform code
+2. Resolve `s3_object_url.tf` file issue, it cause multiple apply and destroy concerns
+3. Resolve object URL appending to Nginx index.html by terraform code
+4. Resolve CORS configuration by terraform code
+5. Grant S3 bucket objects permission by IAM role which assigned to the dedicated EC2 instance.
 
 
 # More reference

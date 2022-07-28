@@ -4,8 +4,8 @@ resource "aws_lb" "sa-demo" {
   internal           = false
   load_balancer_type = "network" # default type is application
   # security_groups    = [aws_security_group.sa-demo.id]
-  subnets = [aws_subnet.sa-demo.id] # alb require at least 2 subnets
-  enable_deletion_protection = false # if true, tfd will not delete it
+  subnets                    = [aws_subnet.sa-demo.id] # alb require at least 2 subnets
+  enable_deletion_protection = false                   # if true, tfd will not delete it
   # Require S3 Resource of log_bucket
   # access_logs {
   #   bucket  = aws_s3_bucket.log_bucket.bucket

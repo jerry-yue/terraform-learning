@@ -42,3 +42,7 @@ output "sa-demo-instance-public-dns" {
 output "sa-demo-instance-public-ip" {
   value = aws_instance.sa-demo.public_ip
 }
+
+output "aws_elb_dnsname" {
+  value = aws_lb.sa-demo.dns_name
+}

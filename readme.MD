@@ -45,7 +45,7 @@
 1. Resolve the bug of cannot detach EBS volume via terraform code
 2. Resolve `s3_object_url.tf` file issue, it cause multiple apply and destroy concerns
 3. Resolve object URL appending to Nginx index.html by terraform code
-4. Resolve CORS configuration by terraform code
+4. Resolve CORS configuration by terraform code (img src tag no CORS issue. fetch_response has.)
 5. Grant S3 bucket objects permission by IAM role which assigned to the dedicated EC2 instance.
 
 

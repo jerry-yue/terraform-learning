@@ -30,6 +30,12 @@ locals {
     sudo mount ${var.aws_ebs_device_name}1 /usr/share/nginx/html
     echo ">> Config Nginx web server <<"
     sudo echo "<h1>Hello AWS World</h1>" >  /usr/share/nginx/html/index.html 
+    sudo echo "<br/><br/><br/>
+                <h2>Pic1</h2>
+                <img src='https://sa-demo-resouce-bucket.s3.ap-southeast-1.amazonaws.com/screenshots/ebs_volume_auto_mount.png' />
+                <br/><br/><br/>
+                <h2>Pic2</h2>
+                <img src='https://sa-demo-resouce-bucket.s3.ap-southeast-1.amazonaws.com/screenshots/mounted_ebs_volume.png'/>" >>  /usr/share/nginx/html/index.html 
     sudo systemctl enable nginx
     sudo systemctl start nginx
   EOT
